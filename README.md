@@ -804,7 +804,7 @@ Mechanical Concatenation
 
 ## Habeba Mohamed Fetouh
 
-### AI / Machine Learning & Computer Vision Engineer
+### Machine Learning & Computer Vision Engineer
 
 `Computer Vision` • `Deep Learning` • `Sign Language AI`  
 `Pose Processing` • `Human Motion` • `Sequence Modeling`
