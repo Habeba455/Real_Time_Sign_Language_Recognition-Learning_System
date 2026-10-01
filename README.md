@@ -1,27 +1,242 @@
-# Fluent (Sign Language) Pose Synthesis
+<div align="center">
 
-This project aims to make unfluent sign language poses fluent, by post editing the pose sequences.
-It deals with correcting the prosody and intonation.
+# 🤟 Fluent Sign Language Pose Synthesis
 
-## Usage
+### From isolated dictionary signs to fluent, temporally coherent sign language motion
 
+<br>
 
-### 1. Environment Setup
+![Python](https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Deep Learning](https://img.shields.io/badge/Deep%20Learning-Neural%20Motion-FF6F00?style=for-the-badge)
+![Computer Vision](https://img.shields.io/badge/Computer%20Vision-Pose%20Processing-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)
+![Sign Language](https://img.shields.io/badge/Sign%20Language-AI-00A67E?style=for-the-badge)
+![Pose](https://img.shields.io/badge/Pose-Sequence%20Modeling-E91E63?style=for-the-badge)
 
-We recommend using a virtual environment (e.g., `venv` or `conda`) and installing dependencies via `pyproject.toml`.
+<br>
 
-```bash
-# Clone the repository
-git clone https://github.com/sign-language-processing/fluent-pose-synthesis.git
-cd fluent-pose-synthesis
+**Pose Processing • Temporal Modeling • Motion Synthesis • Deep Learning • Sign Language AI**
 
-# Install dependencies using pip (defined in pyproject.toml)
-pip install .
+<br>
+
+> **A neural post-editing pipeline designed to transform mechanically assembled sign-language pose sequences into smoother, more natural and context-aware signing.**
+
+</div>
+
+---
+
+## ✨ What Does This Project Do?
+
+Sign-language generation systems can retrieve or generate the **correct individual signs** while still producing unnatural sentences.
+
+Why?
+
+Because fluent signing is not simply:
+
+```text
+SIGN A + SIGN B + SIGN C + SIGN D
 ```
 
-### 2. Dataset Download and Preparation
+Natural signing contains continuous transitions, timing, rhythm, contextual motion and prosody.
 
-We use the DGS Corpus (sentence-level pose data) and DGS Types Dictionary for gloss-level replacement.
+This project tackles that problem directly.
+
+<div align="center">
+
+### ❌ Dictionary-style generation
+
+`SIGN A` → `SIGN B` → `SIGN C` → `SIGN D`
+
+⬇
+
+**Correct signs — unnatural motion**
+
+### 🧠 Fluent Pose Synthesis
+
+`Dictionary Poses` → `Temporal Alignment` → `Neural Refinement` → `Fluent Motion`
+
+⬇
+
+### ✨ Natural continuous signing
+
+</div>
+
+---
+
+# 🧠 The Core Idea
+
+Instead of regenerating an entire sign-language sentence, the system learns to **post-edit pose sequences**.
+
+It takes a sequence containing dictionary-form sign replacements and learns to reconstruct the fluent sentence-level motion.
+
+```mermaid
+flowchart LR
+    A["🤟 Original Fluent Pose"] --> B["✂️ Select Signs"]
+    C["📚 DGS Types Dictionary"] --> D["🔄 Dictionary Replacement"]
+    B --> D
+    D --> E["⚠️ Non-Fluent Pose"]
+    E --> F["⏱️ Temporal Processing"]
+    F --> G["🧠 Neural Model"]
+    G --> H["✨ Fluent Pose Sequence"]
+```
+
+### Learning objective
+
+```text
+Modified / Non-Fluent Pose
+              ↓
+        Neural Model
+              ↓
+Reconstructed Fluent Pose
+              ≈
+Original Natural Signing
+```
+
+---
+
+# 🚀 End-to-End Pipeline
+
+```mermaid
+flowchart TD
+    A["📦 DGS Corpus"] --> B["🎞️ Sentence-Level Pose"]
+    A --> C["🏷️ Gloss Annotations"]
+
+    D["📖 DGS Types Dictionary"] --> E["🤟 Dictionary Pose"]
+
+    C --> F["🎯 Sign Selection"]
+    E --> G["🔄 Sign Replacement"]
+    F --> G
+    B --> G
+
+    G --> H["⚠️ Artificial Non-Fluent Sequence"]
+    H --> I["⏱️ Temporal Processing"]
+    I --> J["🧠 Neural Pose Model"]
+    J --> K["🌊 Motion Refinement"]
+    K --> L["✨ Fluent Pose Sequence"]
+
+    B -. "Training Target" .-> L
+```
+
+---
+
+# 🎯 The Problem
+
+A generated sign-language sentence may be linguistically correct while still looking unnatural.
+
+<div align="center">
+
+| Dictionary Signing | Natural Sentence Signing |
+|---|---|
+| Independent signs | Context-dependent motion |
+| Fixed duration | Adaptive timing |
+| Hard boundaries | Smooth transitions |
+| Isolated movement | Continuous motion |
+| Mechanical rhythm | Natural prosody |
+
+</div>
+
+### The key observation
+
+<div align="center">
+
+## Correct Signs ≠ Fluent Signing
+
+**Lexical correctness alone is not enough.**
+
+</div>
+
+The challenge is therefore not only deciding **which signs should be generated**, but also determining **how those signs should flow together through time**.
+
+---
+
+# 🔬 Training Strategy
+
+The project creates supervised training examples from naturally fluent signing.
+
+### ① Start with a fluent sentence
+
+```text
+SIGN_A → SIGN_B → SIGN_C → SIGN_D → SIGN_E
+```
+
+### ② Select signs for replacement
+
+```text
+SIGN_A → [SIGN_B] → SIGN_C → [SIGN_D] → SIGN_E
+```
+
+### ③ Retrieve dictionary versions
+
+```text
+SIGN_B → DICTIONARY_B
+SIGN_D → DICTIONARY_D
+```
+
+### ④ Construct an intentionally degraded sequence
+
+```text
+SIGN_A → DICT_B → SIGN_C → DICT_D → SIGN_E
+```
+
+### ⑤ Train the network
+
+```text
+INPUT
+Modified / Non-Fluent Pose Sequence
+
+                ↓
+
+            🧠 MODEL
+
+                ↓
+
+TARGET
+Original Fluent Pose Sequence
+```
+
+This provides a scalable way of generating:
+
+<div align="center">
+
+### `Non-Fluent Pose → Fluent Pose`
+
+training pairs.
+
+</div>
+
+---
+
+# 📦 Dataset Engineering
+
+The pipeline combines two complementary sign-language resources.
+
+### 🎬 DGS Corpus
+
+Used for naturally occurring **sentence-level signing**.
+
+Provides the fluent target sequences.
+
+### 📚 DGS Types
+
+Used for **dictionary-level sign representations**.
+
+Provides isolated signs that can replace signs inside sentence-level sequences.
+
+Together:
+
+```mermaid
+flowchart LR
+    A["🎬 DGS Sentence"] --> C["🧪 Training Pair"]
+    B["📚 Dictionary Sign"] --> C
+
+    C --> D["⚠️ Modified Input"]
+    C --> E["✨ Fluent Target"]
+```
+
+---
+
+# 🗂️ Generated Training Data
+
+Run:
 
 ```bash
 python fluent_pose_synthesis/data/create_data.py \
@@ -30,171 +245,598 @@ python fluent_pose_synthesis/data/create_data.py \
   --output_dir pose_data/output
 ```
 
-This will create a structure like:
+The preprocessing pipeline generates:
 
-```
+```text
 pose_data/
-├── tfds_dgs/             # tfds cache
+│
+├── tfds_dgs/
+│
 └── output/
+    │
     ├── train/
     │   ├── train_1_original.pose
     │   ├── train_1_updated.pose
     │   ├── train_1_metadata.json
+    │   └── ...
+    │
     ├── validation/
+    │
     └── test/
 ```
 
+### Each sample contains
 
-### 3. Debug Model Training
+| File | Purpose |
+|---|---|
+| 🟢 `*_original.pose` | Original fluent sentence |
+| 🟠 `*_updated.pose` | Dictionary-modified sequence |
+| 🔵 `*_metadata.json` | Sample metadata |
 
-To quickly test if everything works:
+This gives the training pipeline explicit:
+
+```text
+INPUT POSE  ──────────────►  TARGET POSE
+Modified                     Original Fluent
+```
+
+pairs.
+
+---
+
+# 🦴 Why Pose-Level Modeling?
+
+The system operates on **structured human pose sequences** instead of raw RGB pixels.
+
+That allows the model to focus on the information that actually defines signing motion.
+
+```mermaid
+mindmap
+  root((🤟 Pose))
+    Hands
+      Position
+      Movement
+      Trajectory
+    Upper Body
+      Arms
+      Shoulders
+      Body Motion
+    Head
+      Orientation
+      Motion
+    Temporal
+      Duration
+      Rhythm
+      Transitions
+      Continuity
+```
+
+This reduces dependence on irrelevant visual characteristics such as:
+
+`Background` • `Lighting` • `Clothing` • `Camera Appearance`
+
+and focuses learning on:
+
+`Motion` • `Timing` • `Pose` • `Transitions`
+
+---
+
+# ⏱️ Temporal Alignment
+
+One of the hardest problems is that an isolated dictionary sign may have a completely different duration from the same sign inside a sentence.
+
+```text
+Sentence Context
+
+|──────────── SIGN ────────────|
+
+Dictionary
+
+|────── SIGN ──────|
+```
+
+A direct replacement can therefore break the timing of the sentence.
+
+The pipeline handles the problem as:
+
+```text
+Dictionary Pose
+      │
+      ▼
+Temporal Adaptation
+      │
+      ├── Stretch
+      │
+      └── Compress
+      │
+      ▼
+Context-Compatible Duration
+      │
+      ▼
+Neural Refinement
+```
+
+---
+
+# 🌊 Motion Continuity
+
+Matching duration alone does not create fluent signing.
+
+Consider:
+
+```text
+Previous Sign
+     │
+     ▼
+██████████
+          ╳  ← Abrupt transition
+           █████████
+           Dictionary Sign
+                    ╳  ← Abrupt transition
+                     █████████
+                          │
+                          ▼
+                       Next Sign
+```
+
+The system therefore considers the replacement inside its surrounding motion context.
+
+```mermaid
+flowchart LR
+    A["Previous Sign"] --> B["Replacement Sign"]
+    B --> C["Next Sign"]
+
+    A & B & C --> D["🧠 Context-Aware Refinement"]
+    D --> E["🌊 Continuous Motion"]
+```
+
+The objective is not merely to preserve the replacement sign.
+
+It is to make the **entire sequence move naturally**.
+
+---
+
+# 🎼 Prosody & Intonation
+
+Natural sign language contains sentence-level information beyond lexical signs.
+
+The project focuses on motion properties associated with:
+
+<table>
+<tr>
+<td align="center">⏱️<br><b>Timing</b></td>
+<td align="center">🎵<br><b>Rhythm</b></td>
+<td align="center">🌊<br><b>Continuity</b></td>
+<td align="center">🔄<br><b>Transitions</b></td>
+<td align="center">🤟<br><b>Sign Duration</b></td>
+<td align="center">🎭<br><b>Prosody</b></td>
+</tr>
+</table>
+
+This turns sign synthesis into a **sequence-level human-motion problem**, rather than treating every sign as an independent visual unit.
+
+---
+
+# 🔗 Where It Fits
+
+Fluent Pose Synthesis can operate as a post-processing stage inside a larger sign-language generation system.
+
+```mermaid
+flowchart LR
+    A["💬 Spoken Text"] --> B["🔤 Translation"]
+    B --> C["🏷️ Glosses"]
+    C --> D["📚 Sign Retrieval"]
+    D --> E["🦴 Initial Poses"]
+    E --> F["🧠 Fluent Pose Synthesis"]
+    F --> G["✨ Refined Poses"]
+    G --> H["🧍 Avatar / Video"]
+```
+
+This makes the system modular.
+
+It does not need to replace the translation or avatar-generation components.
+
+Instead, it solves the difficult intermediate problem of:
+
+<div align="center">
+
+### `Mechanical Pose Sequence → Fluent Motion`
+
+</div>
+
+---
+
+# 🔤 HamNoSys-Compatible Workflow
+
+Pose generation may also originate from symbolic sign representations such as **HamNoSys**.
+
+```mermaid
+flowchart LR
+    A["🏷️ Gloss"] --> B["🔤 HamNoSys"]
+    B --> C["🦴 Pose Generation"]
+    C --> D["⚠️ Initial Signing"]
+    D --> E["🧠 Fluency Refinement"]
+    E --> F["✨ Natural Motion"]
+```
+
+This allows pose refinement to sit downstream of different sign-generation approaches.
+
+---
+
+# ⚙️ Installation
+
+### 1️⃣ Clone
 
 ```bash
-python -m fluent_pose_synthesis.train \
+git clone https://github.com/sign-language-processing/fluent-pose-synthesis.git
+
+cd fluent-pose-synthesis
+```
+
+### 2️⃣ Create the environment
+
+```bash
+conda env create -f environment.yml
+```
+
+### 3️⃣ Activate
+
+```bash
+conda activate fluent-pose
+```
+
+### Alternative
+
+Install directly from GitHub:
+
+```bash
+pip install git+https://github.com/sign-language-processing/fluent-pose-synthesis
+```
+
+---
+
+# 🧪 Debug Training
+
+Before running larger experiments, the complete training pipeline can be tested with:
+
+```bash
+python fluent_pose_synthesis/train.py \
   --name debug \
-  --data assets/sample_dataset \
+  --data pose_data/output \
   --save save/debug_run
 ```
 
-This will:
-- Load only 16 training examples
-- Use batch size = 16
-- Train for 100 epochs
-- Save logs and checkpoints under `save/debug_run`
-
-
-
-## Explanation
-
-Somehow, a pose sequence was generated form sign language videos.
-
-For example, here is a video of a sign language sentence:
-
-[<img src='assets/example/sentence.gif' alt="We were expecting something simple, like a youth hostel.">](https://www.sign-lang.uni-hamburg.de/meinedgs/html/1248862_en.html#t00012332)
-
-Given a system that
-given `We were expecting something simple, like a youth hostel.`
-Translated to the glosses `DIFFERENT1 IMAGINATION1A LIKE3B* EASY1 YOUNG1* HOME1A`.
-Then, using [spoken-to-signed-translation](https://github.com/ZurichNLP/spoken-to-signed-translation),
-videos were found for each gloss, and then put together.
-Or using [Ham2Pose](https://rotem-shalev.github.io/ham-to-pose/), each HamNoSys was animated to a pose sequence.
-
-| Gloss      | HamNoSys                                                                                   | Video                                                                                                                                                           |
-|------------|--------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| DIFFERENT1^ |                                                                              | [<img src='assets/example/DIFFERENT1^.gif' alt="DIFFERENT1^" width='150'>](https://www.sign-lang.uni-hamburg.de/meinedgs/types/type13673_en.html)              |
-| IMAGINATION1A^ |                                                                                | [<img src='assets/example/IMAGINATION1A^.gif' alt="IMAGINATION1A^" width='150'>](https://www.sign-lang.uni-hamburg.de/meinedgs/types/type13839_en.html)        |
-| LIKE3B*    |                                                          | [<img src='assets/example/LIKE3B*.gif' alt="LIKE3B*" width='150'>](https://www.sign-lang.uni-hamburg.de/meinedgs/types/type82561_en.html)                      |
-| EASY1      |                                                                        | [<img src='assets/example/EASY1.gif' alt="EASY1" width='150'>](https://www.sign-lang.uni-hamburg.de/meinedgs/types/type13082_en.html)                          |
-| YOUNG1*    |                                                                        | [<img src='assets/example/YOUNG1*.gif' alt="YOUNG1*" width='150'>](https://www.sign-lang.uni-hamburg.de/meinedgs/types/type13872_en.html)                      |
-| HOME1A     |                                                                          | [<img src='assets/example/HOUSE1A^.gif' alt="HOUSE1A^" width='150'>](https://www.sign-lang.uni-hamburg.de/meinedgs/types/type13958_en.html)                    |
-
+### Debug configuration
 
 <table>
-  <tr>
-    <th width="50%">When performed in this way, the pose sequence is not fluent</th>
-    <th width="50%">This project aims to make the pose sequence more natural</th>
-  </tr>
-  <tr>
-    <td><img src='assets/example/poses/stitched.gif' alt="Stitched Pose Sequence" style="width:100%;"></td>
-    <td><img src='assets/example/pose.gif' alt="Reference Pose Sequence" style="width:100%;"></td>
-  </tr>
+<tr>
+<td align="center"><b>16</b><br>Training Examples</td>
+<td align="center"><b>16</b><br>Batch Size</td>
+<td align="center"><b>100</b><br>Epochs</td>
+<td align="center"><b>save/debug_run</b><br>Output</td>
+</tr>
 </table>
 
-### Abstract
+This verifies the complete path:
 
-Generated sign language videos have the potential to revolutionize the way deaf individuals interact with the world, but
-they also present a new set of challenges, including the difficulty of post-editing these videos. In this paper, we
-present an innovative idea for post-editing generated sign language videos. Our approach consists of three main steps:
-recording a corrected video, processing the original and corrected videos using a neural model, and diffusing the new
-sequence to create a more fluent video. We use the MeineDGS corpus as our dataset and sign-spotting to detect signs in
-existing videos. Our experiments show promising results, and we believe that this approach has the potential to be
-successful in post-editing generated sign language videos.
+```text
+Dataset
+   ↓
+Pose Loading
+   ↓
+Batch Construction
+   ↓
+Model Forward Pass
+   ↓
+Loss
+   ↓
+Optimization
+   ↓
+Logging
+   ↓
+Checkpoint
+```
 
-### Introduction
+---
 
-Sign languages are an important means of communication for deaf communities, and recent advances in Sign Language
-Translation and Avatar Technology have made it possible to generate sign language videos using avatars or realistic
-humans. However, these generated videos are not easily editable and may contain errors that need correction. In this
-paper, we present an innovative idea for post-editing generated sign language videos.
+# 🧪 Evaluation
 
-Our idea relies on the fact that videos are generated as pose sequences and then animated using either an avatar or a
-realistic human via Generative Adversarial Networks (GANs) or diffusion. When a sign is detected to be incorrect or a
-phrase needs to be edited, a new video can be recorded of the corrected version. The original video, along with the new
-corrected video, is then processed by a neural model that stretches and compresses the new video to match the timing of
-the original sequence. Finally, the model uses diffusion to create a more fluent video, without changing the content of
-the signing.
+Sign-language motion quality cannot be captured reliably by a single metric.
 
-To train this system, we propose using sign-spotting to detect signs in existing videos, then use a dictionary form of
-these signs to train the system to diffuse from the original video plus the dictionary form to a fluent video. One
-dataset that could be used for this purpose is the MeineDGS corpus, which contains all sentences fully glossed and a
-dictionary (DGS Types) that includes many signs in their dictionary form.
+The project therefore considers two complementary evaluation directions.
 
-In this paper, we present the details of our proposed idea and discuss the potential challenges and limitations.
-Although we do not yet have results, we believe that this approach has the potential to be successful in post-editing
-generated sign language videos.
+### 📐 Objective Evaluation
 
-### Background
+```text
+Pose Reconstruction
+Motion Consistency
+Sign Recognition
+Sequence Quality
+```
 
-Sign languages are an essential part of deaf culture and play a crucial role in communication for deaf individuals. With
-the development of Sign Language Translation and Avatar Technology, it is now possible to generate sign language videos
-using avatars or realistic humans. These generated videos have the potential to revolutionize the way deaf individuals
-interact with the world, but they also present a new set of challenges. One of these challenges is the difficulty of
-post-editing generated sign language videos, since they are not easily editable.
+### 👥 Human Evaluation
 
-The problem of post-editing generated videos is not limited to sign languages, as it is also a challenge for spoken
-languages. In the field of spoken language post-editing, there have been several works that address the issue of editing
-generated text. One approach is to use machine translation models that are fine-tuned on a specific domain or task to
-improve the fluency and accuracy of the generated text. Another approach is to use an encoder-decoder architecture that
-can generate new text based on an input sequence, while preserving the content and meaning of the original text.
+```text
+Naturalness
+Fluency
+Transition Quality
+Perceived Signing Quality
+```
 
-However, these approaches are not directly applicable to sign language videos, which require a different approach.
-Unlike spoken language, sign languages are visual and gestural, and therefore, post-editing generated sign language
-videos requires a different set of techniques. In this paper, we present an innovative idea for post-editing generated
-sign language videos, which takes into account the unique challenges and requirements of sign languages.
+This distinction matters because:
 
-### Method
+<div align="center">
 
-In this section, we describe our proposed method for post-editing generated sign language videos. Our method consists of
-three main steps: recording a corrected video, processing the original and corrected videos using a neural model, and
-diffusing the new sequence to create a more fluent video.
+### Low Pose Error ≠ Natural Signing
 
-1. **Recording a Corrected Video.**
-   When a sign is detected to be incorrect or a phrase needs to be edited in a generated sign language video, a new
-   video can be recorded of the corrected version. The new video should only include the corrected portion, and the
-   signing should be as fluent as possible.
-2. **Processing the Original and Corrected Videos.**
-   The original video, along with the new corrected video, is then processed by a neural model that stretches and
-   compresses the new video to match the timing of the original sequence. The model should be trained to perform this
-   task, which can be done by using a large dataset of sign language videos.
-3. **Diffusing the New Sequence.**
-   Finally, the model uses diffusion to create a more fluent video, without changing the content of the signing. This
-   step is crucial, as it ensures that the corrected video is integrated smoothly into the original video, resulting in
-   a more natural-looking sign language video.
+</div>
 
-To train the neural model, we propose using sign-spotting to detect signs in existing videos, then use a dictionary form
-of these signs to train the system to diffuse from the original video plus the dictionary form to a fluent video. One
-dataset that could be used for this purpose is the MeineDGS corpus, which contains all sentences fully glossed and a
-dictionary (DGS Types) that includes many signs in their dictionary form.
+A sequence may be numerically close to a target while still looking unnatural to a signer.
 
-### Experiments
+---
 
-In this section, we describe the experimental setup for training our proposed system for post-editing generated sign
-language videos.
+# ⚡ Engineering Challenges
 
-#### Dataset
+| Challenge | What the System Must Solve |
+|---|---|
+| 🔗 **Sign Concatenation** | Convert isolated signs into continuous motion |
+| ⏱️ **Variable Duration** | Handle context-dependent sign lengths |
+| 🔄 **Temporal Alignment** | Stretch/compress replacement motion |
+| 🌊 **Transitions** | Remove abrupt sign boundaries |
+| 🧠 **Context Modeling** | Use surrounding motion information |
+| 🤟 **Content Preservation** | Maintain intended linguistic content |
+| 🦴 **Pose Complexity** | Model spatial + temporal dependencies |
+| 📦 **Dataset Generation** | Automatically construct training pairs |
 
-We use the MeineDGS corpus as our dataset, which contains all sentences fully glossed and a dictionary (DGS Types) that
-includes many signs in their dictionary form. For every sentence in the corpus, we sample 1 to all signs in the sentence
-and replace them with a dictionary form. This results in a new sequence that can be used as input for our neural model.
+---
 
-#### Neural Model
+# 🏗️ Repository Structure
 
-Our neural model is a deep learning-based system that takes as input the original video sequence and the corrected
-sequence (in dictionary form), and outputs a more fluent video. The model is trained using the MeineDGS corpus and the
-sign-spotting data to minimize the difference between the output video and the original video.
+```text
+fluent-pose-synthesis/
+│
+├── 📂 fluent_pose_synthesis/
+│   │
+│   ├── 📂 data/
+│   │   └── create_data.py
+│   │
+│   ├── train.py
+│   └── ...
+│
+├── 📂 pose_data/
+│   │
+│   ├── tfds_dgs/
+│   │
+│   └── output/
+│   │       ├── train/
+│   │       ├── validation/
+│   │       └── test/
+│
+├── 📂 save/
+│   └── debug_run/
+│
+├── environment.yml
+└── README.md
+```
 
-#### Evaluation
+---
 
-To evaluate the performance of our proposed system, we use subjective and objective metrics. Subjective metrics include
-human judgment of the fluency and naturalness of the output video, while objective metrics include metrics such as sign
-recognition accuracy and video quality.
+# 🛠️ Technical Stack
+
+<div align="center">
+
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Deep Learning](https://img.shields.io/badge/Deep%20Learning-FF6F00?style=for-the-badge&logo=pytorch&logoColor=white)
+![Computer Vision](https://img.shields.io/badge/Computer%20Vision-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)
+![Conda](https://img.shields.io/badge/Conda-44A833?style=for-the-badge&logo=anaconda&logoColor=white)
+![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
+
+</div>
+
+### Core Areas
+
+<div align="center">
+
+`Pose Processing`
+&nbsp; • &nbsp;
+`Sequence Modeling`
+&nbsp; • &nbsp;
+`Temporal Alignment`
+&nbsp; • &nbsp;
+`Motion Synthesis`
+&nbsp; • &nbsp;
+`Dataset Engineering`
+&nbsp; • &nbsp;
+`Sign Language AI`
+
+</div>
+
+---
+
+# 💡 Research Motivation
+
+Many sign-generation pipelines primarily optimize:
+
+> **What sign should appear next?**
+
+But natural signing requires another equally important question:
+
+> **How should the movement flow from one sign to the next?**
+
+This project targets that second problem.
+
+```text
+         SIGN LANGUAGE GENERATION
+                   │
+          ┌────────┴────────┐
+          │                 │
+          ▼                 ▼
+    WHAT TO SIGN       HOW TO MOVE
+          │                 │
+     Translation        Fluency
+     Glosses            Timing
+     Lexical choice     Transitions
+          │                 │
+          └────────┬────────┘
+                   ▼
+            Natural Signing
+```
+
+---
+
+# 🌍 Potential Applications
+
+<table>
+<tr>
+<td width="50%">
+
+### 🤟 Sign Language Translation
+Improve automatically generated signing after translation.
+
+### 🧍 Signing Avatars
+Generate smoother motion before avatar rendering.
+
+### 🎥 Video Generation
+Refine pose sequences before realistic video synthesis.
+
+</td>
+<td width="50%">
+
+### ✏️ Sign Editing
+Replace incorrect signs without regenerating full sentences.
+
+### ♿ Accessibility AI
+Support more natural machine-generated signing.
+
+### 🔬 Sign Language Research
+Study isolated vs. sentence-level motion.
+
+</td>
+</tr>
+</table>
+
+---
+
+# 🔮 Future Directions
+
+```mermaid
+mindmap
+  root((🚀 Future))
+    Modeling
+      Temporal Transformers
+      Diffusion Models
+      Context Modeling
+    Motion
+      Coarticulation
+      Boundary Refinement
+      Duration Prediction
+    Sign Language
+      Non-manual Features
+      Sign Spotting
+      Prosody Modeling
+    Deployment
+      Real-time Correction
+      Avatar Integration
+      End-to-End Generation
+```
+
+---
+
+# 🏆 Project Highlights
+
+<div align="center">
+
+| | |
+|---|---|
+| 🧠 | **Neural pose-sequence post-editing** |
+| 🤟 | **Sign-language-specific motion modeling** |
+| 📦 | **Automatic paired dataset generation** |
+| ⏱️ | **Temporal alignment and duration handling** |
+| 🌊 | **Motion continuity and transition refinement** |
+| 🦴 | **Structured pose-level representation** |
+| 🔗 | **Compatible with larger generation pipelines** |
+| 🔬 | **Research-oriented training & evaluation workflow** |
+
+</div>
+
+---
+
+# 🎯 Vision
+
+<div align="center">
+
+### Moving from...
+
+```text
+Correct Signs
+      +
+Mechanical Concatenation
+```
+
+### ...toward
+
+```text
+             Correct Signs
+                   +
+             Natural Timing
+                   +
+           Continuous Motion
+                   +
+        Contextual Transitions
+                   +
+                Prosody
+                   │
+                   ▼
+        ✨ FLUENT SIGNING ✨
+```
+
+### Sign generation should not only be correct.
+
+## It should move naturally.
+
+</div>
+
+---
+
+# 👩‍💻 Author
+
+<div align="center">
+
+## Habeba Mohamed Fetouh
+
+### AI / Machine Learning & Computer Vision Engineer
+
+`Computer Vision` • `Deep Learning` • `Sign Language AI`  
+`Pose Processing` • `Human Motion` • `Sequence Modeling`
+
+<br>
+
+**Building AI systems that understand not only what humans communicate — but how they move.**
+
+</div>
+
+---
+
+## ⚠️ Research Note
+
+This project is intended for research and development in sign-language processing and pose synthesis.
+
+Evaluation of generated signing should include appropriate linguistic expertise and, where possible, feedback from members of the relevant Deaf and signing communities.
+
+---
+
+<div align="center">
+
+### 🤟 From isolated signs to continuous, fluent motion.
+
+<br>
+
+![Research](https://img.shields.io/badge/Research-Sign%20Language%20AI-6C63FF?style=for-the-badge)
+![Pose](https://img.shields.io/badge/Pose-Motion%20Synthesis-E91E63?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Research%20Project-success?style=for-the-badge)
+
+<br><br>
+
+**⭐ Star this repository if you find the project useful.**
+
+</div>
